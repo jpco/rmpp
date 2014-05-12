@@ -1,5 +1,4 @@
 RMPP
-By Jack Conger
 
 It's safer than GNU rm, becuase GNU rm isn't safe.
 
@@ -27,5 +26,10 @@ DISCLAIMERS:
  - There are serious reasons why you shouldn't replace default /bin/rm with something else or alias rm=.... It can be confusing, and lead you even further astray than default /bin/rm would have anyway. Some in-program deletion instruction (like in Emacs, maybe?) may permanently delete. Don't get cocky.
  - This software is INCOMPLETELY TESTED and therefore may/will be BUGGY. You might kill some files you didn't mean to. I'm sorry.
  - Note the global blacklist is very incomplete, so whatever you may consider "important" might not be covered on it.
+
+TO-DO:
+ - Add to the blacklist.
+ - Add wildcard/glob support to unrm. "--last" works well if you accidentally delete the whole contents of a folder (say, you typed "rm * .txt" instead of "rm *.txt"), realize it right away, and want it back. But it's not everything.
+ - Bug squashing, naturally.
 
 Improvements/additions to the blacklist/etc. to mail@jpconger.com :)
