@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Empties your ~/.trash folder, the right way.
+# Written by Jack Conger, 2014.
+
+if [[ $1 = "--help" ]]; then
+	echo "Usage: emptytrash [-f]"
+	echo "Emptytrash: Empties the ~/.trash/ folder as created by rmpp."
+	echo "Warning: this is NOT UNDOABLE! It's about as unsafe as GNU 'rm -rf' has always been!"
+	echo ""
+	echo "Created by Jack Conger 2014."
+	exit 0
+elif [[ $1 = "-f" ]]; then
+	conf=y
+else
+	echo -n "Do you really want to empty the trash? "
+	read conf
+fi
+
+if [[ $conf =~ ^[yY] ]]; then
+	echo "..."
+	unsaferm -rf ~/.trash/*
+	touch ~/.trash/trashregister
+	echo "Trash emptied."
+fi

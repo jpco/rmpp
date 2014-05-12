@@ -1,0 +1,119 @@
+#!/bin/bash
+
+# A safer rm command: Creates an indexed .trash directory in the caller's 
+# home folder and moves the rm'd items there, which can then be unrm'd
+# later.
+# Written by Jack Conger, 2014
+
+# ARGUMENT PARSING
+
+if [[ $# -eq 0 ]]; then
+	echo "rmpp: missing operand."
+	echo "Try 'rm --help' for more information."
+	exit 1
+elif [[ $1 = "--help" ]]; then
+	echo "Usage: rm [OPTION]... FILE..."
+	echo "Rmpp--Safe rm: Does not unlink the file(s): rather, moves them to the user's"
+	echo "~/.trash/ folder. See unrm and emptytrash for details on what you can"
+	echo "do once the files are there."
+	echo ""
+	echo "OPTIONS:"
+	echo "-r, -R			recursive, 'remove' directories and their contents recursively."
+	echo "-i, -I			interactive, prompt before each removal."
+	echo "--ignore-blacklist	ignores the global- and user-blacklists. This is dangerous."
+	echo ""
+	echo "That's it. No more options at this time. Created by Jack Conger 2014."
+	exit 0
+fi
+
+for arg in $@; do
+	if [[ $arg =~ ^- ]]; then
+		if [[ $arg = "--ignore-blacklist" ]]; then
+			ignoreblacklist=1
+			continue
+		fi
+		if [[ $arg =~ [rR] ]]; then
+			recurse=1
+		fi
+		if [[ $arg =~ [iI] ]]; then
+			interact=1
+		fi
+	fi
+done
+
+# THE "MEAT", IF YOU WILL
+
+wdir=$(pwd)
+
+if [[ ! -d ~/.trash ]]; then
+	mkdir ~/.trash
+	touch ~/.trash/trashregister
+fi
+
+for ftorm in $@; do
+	if [[ ! -e $ftorm ]]; then
+		if [[ ! $ftorm =~ ^- ]]; then
+			echo "File '$ftorm' not found."
+		fi
+		continue
+	fi
+
+	if [[ -n $interact ]]; then
+		echo -n "Do you want to delete the file $ftorm? "
+		read conf
+		if [[ ! $conf =~ ^[yY] ]]; then
+			echo "Skipping file '$ftorm'..."
+			continue
+		fi
+	fi
+
+	if [[ -d $ftorm ]]; then
+		if [[ -z $recurse ]]; then
+			echo "Skipping directory '$ftorm'..."
+			continue
+		fi
+	fi
+
+	cd $(dirname $ftorm)
+	fullpath=$(pwd)
+	justfname=${ftorm##*/}
+	if [[ $ftorm =~ /$ ]]; then
+		ftorm="${ftorm%?}"
+		justfname=${ftorm##*/}
+	fi
+	cd $wdir
+
+	if [[ -n $(grep -x $fullpath/$justfname /etc/rmpp.conf) ]]; then
+		blconf=""
+		if [[ -n $ignoreblacklist ]]; then
+			echo -n "Are you sure you want to delete blacklisted file '$ftorm'? "
+			read blconf
+		fi
+		if ! [[ $blconf =~ ^[Yy] ]]; then
+			blconf=""
+		fi
+		if [[ -z $blconf ]]; then
+			echo "Skipping globally blacklisted file '$ftorm'..."
+			continue
+		fi
+	elif [[ -n $(grep -x $fullpath/$justfname ~/.config/rmpp.conf 2> /dev/null) ]]; then
+		blconf=""
+		if [[ -n $ignoreblacklist ]]; then
+			echo -n "Are you sure you want to delete blacklisted file '$ftorm'? "
+			read blconf
+		fi
+		if ! [[ $blconf =~ ^[Yy] ]]; then
+			blconf=""
+		fi
+		if [[ -z $blconf ]]; then
+			echo "Skipping user-blacklisted file '$ftorm'..."
+			continue
+		fi
+	fi
+
+	newfname="~$justfname~$(date +%s)"
+	mv $ftorm ~/.trash/$newfname
+
+	echo -e "$fullpath/$justfname\t$newfname" >> ~/.trash/trashregister
+
+done

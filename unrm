@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# How to save what you just killed? Use unrm! :)
+# Written by Jack Conger, 2014
+
+if [[ $# -eq 0 ]]; then
+	echo "unrm: missing operand."
+	echo "try 'unrm --help' for more information."
+	exit 1
+elif [[ $1 = "--help" ]]; then
+	echo "Usage: unrm FILE..."
+	echo "Unrm: To bring back things which have been sent to the trash by rmpp."
+	echo "--last: To bring back
+	echo ""
+	echo "Created by Jack Conger 2014."
+	exit 0
+fi
+
+wdir=$(pwd)
+
+if [[ $1 = "--last" ]]; then
+	lastline=$(tail -1 ~/.trash/trashregister)
+	lasttime=${lastline##*~}
+	
+	while read line; do
+		if ! [[ $line =~ $lasttime ]]; then
+			continue
+		fi
+		tounrm=$(echo "$line" | cut -f 1)
+		unrm $tounrm
+	done < ~/.trash/trashregister
+
+	exit 0
+fi
+
+for ftounrm in $@; do
+	cd $(dirname $ftounrm)
+	fullpath=$(pwd)
+	justfname=${ftounrm##*/}
+
+	fnameintrash=$(grep -P "^$fullpath/$justfname\t" ~/.trash/trashregister | cut -f 2)
+	if [[ -n $fnameintrash ]]; then
+		cp -r ~/.trash/$fnameintrash $fullpath/$justfname && unsaferm -rf ~/.trash/$fnameintrash
+		grep -vP "^$fullpath/$justfname\t" ~/.trash/trashregister > ~/.trash/newtrashreg
+		mv ~/.trash/newtrashreg ~/.trash/trashregister
+	else
+		echo "File not found in trash."
+		cd $wdir
+		exit 1
+	fi
+done
+
+cd $wdir
