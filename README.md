@@ -24,10 +24,10 @@ DISCLAIMERS:
  - There are serious reasons why you shouldn't replace default /bin/rm with something else or alias rm=.... It can be confusing to have two 'remove' behaviors, and that confusion lead you even further astray than default /bin/rm would have anyway. Some in-program deletion commands (like in Emacs, maybe?) may still permanently delete files. Don't get cocky.
  - This software is INCOMPLETELY TESTED and therefore may/will be BUGGY. You might kill some files you didn't mean to. (Though I'm almost certain you won't mess up files you don't rm.)
  - Note the global blacklist is very incomplete, so whatever you may consider "important" might not be covered on it.
+ - Globbing is an issue for unrm. If you want, say, "remove all files I've deleted from this folder", you have to type "unrm '*'" and not "unrm *". I can't help this; it's the shell.
 
 TO-DO:
  - Add to the blacklist.
- - Add wildcard/glob support to unrm. "--last" works well if you accidentally delete the whole contents of a folder (say, you typed "rm * .txt" instead of "rm *.txt"), realize it right away, and want it back. But it's not everything.
  - Bug squashing, naturally.
 
 Improvements/additions to the blacklist/etc. to mail@jpconger.com :)

@@ -3,6 +3,8 @@
 # How to save what you just killed? Use unrm! :)
 # Written by Jack Conger, 2014
 
+# ARGUMENT HANDLING
+
 if [[ $# -eq 0 ]]; then
 	echo "unrm: missing operand."
 	echo "try 'unrm --help' for more information."
@@ -10,7 +12,10 @@ if [[ $# -eq 0 ]]; then
 elif [[ $1 = "--help" ]]; then
 	echo "Usage: unrm FILE..."
 	echo "Unrm: To bring back things which have been sent to the trash by rmpp."
-	echo "--last: To bring back the latest removed thing."
+	echo "option --last: To bring back the latest removed thing."
+	echo ""
+	echo "If you want to use wildcards, put your argument in single quotes ''!"
+	echo "Otherwise things won't go well."
 	echo ""
 	echo "Created by Jack Conger 2014."
 	exit 0
@@ -33,22 +38,42 @@ if [[ $1 = "--last" ]]; then
 	exit 0
 fi
 
-for ftounrm in $@; do
-	cd $(dirname $ftounrm)
-	fullpath=$(pwd)
-	justfname=${ftounrm##*/}
+# THE MEAT
 
-	fnameintrash=$(grep -P "^$fullpath/$justfname\t" ~/.trash/trashregister | cut -f 2)
-	echo $fnameintrash
-	if [[ -n $fnameintrash ]]; then
-		if [[ -d ~/.trash/$fnameintrash ]]; then
-			cp -r ~/.trash/$fnameintrash $fullpath/$justfname && /bin/rm -rf ~/.trash/$fnameintrash
-		else
-			cp ~/.trash/$fnameintrash $fullpath/$justfname && /bin/rm -rf ~/.trash/$fnameintrash
+for ftounrm in "$@"; do
+	cd $(dirname "$ftounrm")
+	fullpath=$(pwd)
+	justfname="${ftounrm##*/}"
+	if [[ -z $justfname ]]; then
+		justfname=${ftounrm%?##*/}
+		justfname=${justfname%?}
+	fi
+
+	echo $"Path: $fullpath/"$justfname
+	justfname=$(echo "$justfname" | sed -r "s/\*/\.\*/g")
+
+	filefound=""
+
+	while read -r line; do
+		echo "Line: "$line
+		target=$(echo $line | cut -d " " -f 1)
+		fnameintrash=$(echo $line | cut -d " " -f 2)
+		echo "Fname: "$fnameintrash
+		if [[ -n $fnameintrash ]]; then
+			filefound=1
+			rmsuccess=""
+			if [[ -d ~/.trash/$fnameintrash ]]; then
+				cp -r ~/.trash/$fnameintrash $target && /bin/rm -rf ~/.trash/$fnameintrash && rmsuccess=1
+			else
+				cp ~/.trash/$fnameintrash $target && /bin/rm -rf ~/.trash/$fnameintrash && rmsuccess=1
+			fi
+			if [[ -n $rmsuccess ]]; then
+				grep -v "^$fullpath/$justfname\>" ~/.trash/trashregister > ~/.trash/newtrashreg
+				mv ~/.trash/newtrashreg ~/.trash/trashregister
+			fi
 		fi
-		grep -vP "^$fullpath/$justfname\t" ~/.trash/trashregister > ~/.trash/newtrashreg
-		mv ~/.trash/newtrashreg ~/.trash/trashregister
-	else
+	done < <(grep "^$fullpath/$justfname\>" ~/.trash/trashregister)
+	if [[ -z $filefound ]]; then
 		echo "File not found in trash."
 		cd $wdir
 		exit 1
