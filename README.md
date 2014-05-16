@@ -13,18 +13,16 @@ This package includes a blacklist--files that rmpp won't remove unless you SPECI
 
 INSTALLATION:
  1. This is dangerous. Start in the folder you want your scripts to live in (mine is ~/.scripts/rmpp/)
- 2. "mv /bin/rm /bin/unsaferm"
- 3. "ln -s $(pwd)/rmpp /bin/rm"
- 4. "ln -s $(pwd)/unrm /bin/unrm"
- 5. "ln -s $(pwd)/emptytrash /bin/emptytrash"
+ 2. "ln -s $(pwd)/rmpp /bin/rmpp"
+ 3. "ln -s $(pwd)/unrm /bin/unrm"
+ 4. "ln -s $(pwd)/emptytrash /bin/emptytrash"
+ 5. Put in your ~/.bashrc "alias rm='rmpp'"
  6. "sudo mv rmpp.conf /etc/rmpp.conf"
-
-Note that you don't have to do it this way, but if you don't rename /bin/rm to /bin/unsaferm, emptytrash won't work.
 
 DISCLAIMERS:
  - USE AT YOUR OWN RISK. Read the source before using it.
- - There are serious reasons why you shouldn't replace default /bin/rm with something else or alias rm=.... It can be confusing, and lead you even further astray than default /bin/rm would have anyway. Some in-program deletion instruction (like in Emacs, maybe?) may permanently delete. Don't get cocky.
- - This software is INCOMPLETELY TESTED and therefore may/will be BUGGY. You might kill some files you didn't mean to. I'm sorry.
+ - There are serious reasons why you shouldn't replace default /bin/rm with something else or alias rm=.... It can be confusing to have two 'remove' behaviors, and that confusion lead you even further astray than default /bin/rm would have anyway. Some in-program deletion commands (like in Emacs, maybe?) may still permanently delete files. Don't get cocky.
+ - This software is INCOMPLETELY TESTED and therefore may/will be BUGGY. You might kill some files you didn't mean to. (Though I'm almost certain you won't mess up files you don't rm.)
  - Note the global blacklist is very incomplete, so whatever you may consider "important" might not be covered on it.
 
 TO-DO:

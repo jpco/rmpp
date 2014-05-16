@@ -19,7 +19,7 @@ fi
 
 if [[ $conf =~ ^[yY] ]]; then
 	echo "..."
-	unsaferm -rf ~/.trash/*
+	/bin/rm -rf ~/.trash/*
 	touch ~/.trash/trashregister
 	echo "Trash emptied."
 fi
