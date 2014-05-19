@@ -1,0 +1,27 @@
+#!/bin/bash
+
+if [[ $# -eq 0 ]]; then
+	echo "rmdir: missing operand."
+	echo "Try 'rmdir --help' for more information."
+	exit 1
+elif [[ $1 = "--help" ]]; then
+	echo "Usage: rmdir [FILE]"
+	echo "Rmdir: The directory equivalent to rmpp."
+	echo "See rmpp for more details."
+	echo ""
+	echo "Created by Jack Conger 2014."
+fi
+
+wdir=$(pwd)
+
+for ftorm in $@; do
+	if [[ -d $ftorm ]]; then
+		if [[ -z `ls $ftorm` ]]; then
+			rmpp -r $ftorm
+		else
+			echo "Directory $ftorm not empty."
+		fi
+	else
+		echo "Directory $ftorm not found or is not a directory."
+	fi
+done
