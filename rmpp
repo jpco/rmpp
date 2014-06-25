@@ -18,11 +18,42 @@ elif [[ $1 = "--help" ]]; then
 	echo "do once the files are there."
 	echo ""
 	echo "OPTIONS:"
-	echo "-r, -R			recursive, 'remove' directories and their contents recursively."
-	echo "-i, -I			interactive, prompt before each removal."
-	echo "--ignore-blacklist	ignores the global- and user-blacklists. This is dangerous."
+	echo "-o			Original: Use original /bin/rm, with all its associated"
+	echo "			risk. Must be the first tag; all tags after the -o tag"
+	echo "			will be processed by /bin/rm."
+	echo "-r, -R			Recursive, 'remove' directories and their contents"
+	echo "			recursively."
+	echo "-i, -I			Interactive, prompt before each removal."
+	echo "--ignore-blacklist	Ignores the global- and user-blacklists. This is"
+	echo "			dangerous."
 	echo ""
 	echo "That's it. No more options at this time. Created by Jack Conger 2014."
+	exit 0
+fi
+
+defIFS=$IFS
+IFS=:
+
+if [[ $1 =~ ^-o ]]; then
+	echo -n "This is unsafe. Continue? (y/N): "
+	read conf
+	if [[ ! $conf =~ ^[yY] ]]; then
+		IFS=$defIFS
+		exit 0
+	fi
+	if [[ $1 = -o ]]; then
+		if [[ $# -eq 1 ]]; then
+			tags=''
+		else
+			tags=$(echo $* | sed 's/[^ ]* //')
+		fi
+	else
+		tags=-$(echo $* | sed 's/^..//')
+	fi
+
+	IFS=$defIFS
+	echo "call > '/bin/rm "$tags"'"
+	/bin/rm $tags
 	exit 0
 fi
 
@@ -59,7 +90,7 @@ for ftorm in $@; do
 	fi
 
 	if [[ -n $interact ]]; then
-		echo -n "Do you want to delete the file $ftorm? "
+		echo -n "Do you want to delete the file $ftorm? (y/N): "
 		read conf
 		if [[ ! $conf =~ ^[yY] ]]; then
 			echo "Skipping file '$ftorm'..."
@@ -86,7 +117,7 @@ for ftorm in $@; do
 	if [[ -n $(grep -x $fullpath/$justfname /etc/rmpp.conf) ]]; then
 		blconf=""
 		if [[ -n $ignoreblacklist ]]; then
-			echo -n "Are you sure you want to delete blacklisted file '$ftorm'? "
+			echo -n "Are you sure you want to delete blacklisted file '$ftorm'? (y/N): "
 			read blconf
 		fi
 		if ! [[ $blconf =~ ^[Yy] ]]; then
@@ -99,7 +130,7 @@ for ftorm in $@; do
 	elif [[ -n $(grep -x $fullpath/$justfname ~/.config/rmpp.conf 2> /dev/null) ]]; then
 		blconf=""
 		if [[ -n $ignoreblacklist ]]; then
-			echo -n "Are you sure you want to delete blacklisted file '$ftorm'? "
+			echo -n "Are you sure you want to delete blacklisted file '$ftorm'? (y/N): "
 			read blconf
 		fi
 		if ! [[ $blconf =~ ^[Yy] ]]; then
@@ -115,5 +146,6 @@ for ftorm in $@; do
 	mv $ftorm ~/.trash/$newfname
 
 	echo -e "$fullpath/$justfname\t$newfname" >> ~/.trash/trashregister
-
 done
+
+IFS=$defIFS
