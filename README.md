@@ -47,5 +47,6 @@ BUGS:
 TO-DO:
  - Add to the blacklist.
  - Properly define/implement behavior for name-conflicts which can arise with unrm.
+ - create lstrash
 
 Contact at mail@jpconger.com :)

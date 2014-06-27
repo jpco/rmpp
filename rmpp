@@ -78,6 +78,7 @@ wdir=$(pwd)
 
 if [[ ! -d ~/.trash ]]; then
 	mkdir ~/.trash
+	chmod 300 ~/.trash
 	touch ~/.trash/trashregister
 fi
 
