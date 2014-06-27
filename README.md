@@ -26,10 +26,12 @@ NOTE: When I installed this way, it made my boot/shutdown unstable. Strongly do 
 
 SAFER way:
 In your ~/.bashrc,
- 1. alias rm=/location/of/rmpp
- 2. alias unrm=/location/of/unrm
- 3. alias rmdir=/location/of/rmdirpp
- 4. alias emptytrash=/location/of/emptytrash
+```bash
+alias rm=/location/of/rmpp
+alias unrm=/location/of/unrm
+alias rmdir=/location/of/rmdirpp
+alias emptytrash=/location/of/emptytrash
+```
 
 DISCLAIMERS:
  - USE AT YOUR OWN RISK. Read the source before using it.
