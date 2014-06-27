@@ -39,12 +39,13 @@ DISCLAIMERS:
  - It can be confusing to have two 'remove' behaviors, and that confusion lead you even further astray than default /bin/rm would have anyway. Some in-program deletion commands (like in Emacs, maybe?) may still permanently delete files. Don't get cocky.
  - This software is INCOMPLETELY TESTED and therefore may/will be BUGGY. You might kill some files you didn't mean to. (Though I'm almost certain you won't mess up files you don't rm.)
  - Note the global blacklist is very incomplete, so whatever you may consider "important" might not be covered on it.
+ - This package doesn't support files with "\n" in their names. If you use "\n" in your filenames, you're probably used to that, though.
 
 BUGS:
- - 'rm -o' doesn't support files with spaces.
- - 'rm' doesn't support files with "\n" in their names. (Is this a bug? Who names files like this anyway? If somebody has a fix, I'd be interested.)
+ - Currently doesn't behave with the filename '*'
 
 TO-DO:
  - Add to the blacklist.
+ - Properly define/implement behavior for name-conflicts which can arise with unrm.
 
-Improvements/additions to the blacklist/etc. to mail@jpconger.com :)
+Contact at mail@jpconger.com :)
