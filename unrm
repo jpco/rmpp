@@ -14,9 +14,6 @@ elif [[ $1 = "--help" ]]; then
 	echo "Unrm: To bring back things which have been sent to the trash by rmpp."
 	echo "option --last: To bring back the latest removed thing."
 	echo ""
-	echo "If you want to use wildcards, put your argument in single quotes ''!"
-	echo "Otherwise things won't go well."
-	echo ""
 	echo "Created by Jack Conger 2014."
 	exit 0
 fi
@@ -40,7 +37,12 @@ fi
 
 # THE MEAT
 
+defIFS=$IFS
+IFS='
+'
+
 for ftounrm in "$@"; do
+	IFS=$defIFS
 	cd $(dirname "$ftounrm")
 	fullpath=$(pwd)
 	justfname="${ftounrm##*/}"
@@ -49,28 +51,21 @@ for ftounrm in "$@"; do
 		justfname=${justfname%?}
 	fi
 
-	echo $"Path: $fullpath/"$justfname
 	justfname=$(echo "$justfname" | sed -r "s/\*/\.\*/g")
 
 	filefound=""
 
 	while read -r line; do
-		echo "Line: "$line
-		target=$(echo $line | cut -d " " -f 1)
-		fnameintrash=$(echo $line | cut -d " " -f 2)
-		echo "Fname: "$fnameintrash
+		target=${line%/*}
+		fnameintrash=${line##*/}
 		if [[ -n $fnameintrash ]]; then
 			filefound=1
-			rmsuccess=""
-			if [[ -d ~/.trash/$fnameintrash ]]; then
-				cp -r ~/.trash/$fnameintrash $target && /bin/rm -rf ~/.trash/$fnameintrash && rmsuccess=1
-			else
-				cp ~/.trash/$fnameintrash $target && /bin/rm -rf ~/.trash/$fnameintrash && rmsuccess=1
-			fi
-			if [[ -n $rmsuccess ]]; then
-				grep -v "^$fullpath/$justfname\>" ~/.trash/trashregister > ~/.trash/newtrashreg
-				mv ~/.trash/newtrashreg ~/.trash/trashregister
-			fi
+			IFS='
+'
+				mv ~/.trash/$fnameintrash $target \
+				&& grep -v "^$fullpath/$justfname\>" ~/.trash/trashregister > ~/.trash/newtrashreg \
+				&& mv ~/.trash/newtrashreg ~/.trash/trashregister
+			IFS=$defIFS
 		fi
 	done < <(grep "^$fullpath/$justfname\>" ~/.trash/trashregister)
 	if [[ -z $filefound ]]; then
@@ -78,6 +73,8 @@ for ftounrm in "$@"; do
 		cd $wdir
 		exit 1
 	fi
+	IFS=:
 done
 
 cd $wdir
+IFS=$defIFS

@@ -32,7 +32,8 @@ elif [[ $1 = "--help" ]]; then
 fi
 
 defIFS=$IFS
-IFS=:
+IFS='
+'
 
 if [[ $1 =~ ^-o ]]; then
 	echo -n "This is unsafe. Continue? (y/N): "
@@ -51,9 +52,8 @@ if [[ $1 =~ ^-o ]]; then
 		tags=-$(echo $* | sed 's/^..//')
 	fi
 
-	IFS=$defIFS
-	echo "call > '/bin/rm "$tags"'"
 	/bin/rm $tags
+	IFS=$defIFS
 	exit 0
 fi
 
