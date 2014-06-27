@@ -27,11 +27,12 @@ NOTE: When I installed this way, it made my boot/shutdown unstable. Strongly do 
 SAFER way:
 In your ~/.bashrc,
 ```bash
-alias rm=/location/of/rmpp
-alias unrm=/location/of/unrm
-alias rmdir=/location/of/rmdirpp
-alias emptytrash=/location/of/emptytrash
+alias rm='/location/of/rmpp'
+alias unrm='/location/of/unrm'
+alias rmdir='/location/of/rmdirpp'
+alias emptytrash='/location/of/emptytrash'
 ```
+If you put these files in some directory (say, ~/.scripts/) that's in your PATH, you don't need to specify the full location. In this case, you can specify GNU rm with /bin/rm.
 
 DISCLAIMERS:
  - USE AT YOUR OWN RISK. Read the source before using it.
