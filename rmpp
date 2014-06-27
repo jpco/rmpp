@@ -145,7 +145,7 @@ for ftorm in $@; do
 	newfname="~$justfname~$(date +%s)"
 	mv $ftorm ~/.trash/$newfname
 
-	echo -e "$fullpath/$justfname\t$newfname" >> ~/.trash/trashregister
+	echo -e "$fullpath/$justfname/$newfname" >> ~/.trash/trashregister
 done
 
 IFS=$defIFS
