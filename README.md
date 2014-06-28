@@ -1,8 +1,8 @@
-RMPP
+# RMPP
 
 It's safer than GNU rm, becuase GNU rm isn't safe.
 
-Components:
+## Components:
  - "rmpp": rather than truly removing the file(s) to be rm'd, moves them to the special directory ~/.trash/, indexed and such in a certain way.
  - "rmdirpp": removes empty directories the rmpp way.
  - "unrm": Brings back either a specific file (by specifying "unrm [FILE]") or the last thing removed (by specifying "unrm --last").
@@ -13,7 +13,7 @@ Use "[command] --help" for a few more details.
 
 This package includes a blacklist--files that rmpp won't remove unless you SPECIFICALLY TELL IT to throw caution to the wind with "--no-blacklist". There is a global blacklist specified at /etc/rmpp.conf, and a user-specific one specified at ~/.config/rmpp.conf, though just look at the source and see you can change that folder to something different.
 
-RECOMMENDED INSTALLATION:
+## RECOMMENDED INSTALLATION:
 
 Start in the folder you want your scripts to live in (mine is ~/.scripts/rmpp/), and enter (as root or using sudo):
 ```
@@ -21,10 +21,10 @@ Start in the folder you want your scripts to live in (mine is ~/.scripts/rmpp/),
 # ln -s $(pwd)/unrm /bin/unrm
 # ln -s $(pwd)/emptytrash /bin/emptytrash
 # mv rmpp.conf /etc/rmpp.conf
-# echo "alias rm='rmpp'" >> ~/.bashrc
 ```
+Then in your `~/.bashrc` just add `alias rm='rmpp'`.
 
-After this, you can specify GNU rm with /bin/rm.
+After this, you can specify GNU rm with `/bin/rm`.
 
 DISCLAIMERS:
  - I'm not responsible for your stuff!!!
