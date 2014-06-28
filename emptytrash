@@ -17,9 +17,16 @@ else
 	read conf
 fi
 
-if [[ $conf =~ ^[yY] ]]; then
-	echo "..."
-	/bin/rm -rf ~/.trash/*
-	touch ~/.trash/trashregister
-	echo "Trash emptied."
+if [[ ! $conf =~ ^[yY] ]]; then
+	exit 0
 fi
+
+echo "..."
+
+while read -r line; do
+	/bin/rm -rf ~/.trash/${line##*/}
+done < ~/.trash/trashregister
+
+echo "" > ~/.trash/trashregister
+
+echo "Trash emptied."

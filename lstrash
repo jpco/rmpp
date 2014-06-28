@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "Deleted files currently in trash:"
+while read -r line; do
+	echo "${line%/*}"
+done < ~/.trash/trashregister

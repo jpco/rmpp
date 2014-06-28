@@ -24,7 +24,7 @@ if [[ $1 = "--last" ]]; then
 	lastline=$(tail -1 ~/.trash/trashregister)
 	lasttime=${lastline##*~}
 	
-	while read line; do
+	while read -r line; do
 		if ! [[ $line =~ $lasttime ]]; then
 			continue
 		fi
