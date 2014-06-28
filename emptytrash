@@ -24,9 +24,12 @@ fi
 echo "..."
 
 while read -r line; do
-	/bin/rm -rf ~/.trash/${line##*/}
+	if [[ -n $line ]]; then
+		/bin/rm -rf ~/.trash/${line##*/}
+	fi
 done < ~/.trash/trashregister
 
-echo "" > ~/.trash/trashregister
+rm ~/.trash/trashregister
+touch ~/.trash/trashregister
 
 echo "Trash emptied."

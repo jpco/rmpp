@@ -62,9 +62,20 @@ for ftounrm in "$@"; do
 			filefound=1
 			IFS='
 '
-				mv ~/.trash/$fnameintrash $target \
-				&& grep -v "^$fullpath/$justfname\>" ~/.trash/trashregister > ~/.trash/newtrashreg \
-				&& mv ~/.trash/newtrashreg ~/.trash/trashregister
+			if [[ -e $target ]]; then
+				dups=1
+				while true; do
+					if [[ -e ${target%/*}/$dups.${target##*/} ]]; then
+						let dups=dups+1
+					else
+						break
+					fi
+				done
+				target=${target%/*}/$dups.${target##*/}
+			fi
+
+			mv -f ~/.trash/$fnameintrash $target
+			
 			IFS=$defIFS
 		fi
 	done < <(grep "^$fullpath/$justfname\>" ~/.trash/trashregister)
@@ -73,7 +84,8 @@ for ftounrm in "$@"; do
 		cd $wdir
 		exit 1
 	fi
-	IFS=:
+	grep -v "^$fullpath/$justfname\>" ~/.trash/trashregister > ~/.trash/newtrashreg
+	mv -f ~/.trash/newtrashreg ~/.trash/trashregister
 done
 
 cd $wdir

@@ -37,7 +37,8 @@ After this, you can specify GNU rm with `/bin/rm`.
  - Currently doesn't behave right with the filename `*`
 
 ###TO-DO:
- - Add to the blacklist.
- - Properly define/implement behavior for name-conflicts which can arise with unrm.
+ - Add to the blacklist
+ - Add "date deleted" to files in lstrash
+ - Test in a multi-user environment/context
 
 Contact at mail@jpconger.com :)
