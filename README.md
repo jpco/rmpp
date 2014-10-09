@@ -15,14 +15,17 @@ This package includes a blacklist--files that rmpp won't remove unless you SPECI
 
 ### RECOMMENDED INSTALLATION:
 
-Start in the folder you want your scripts to live in (mine is `~/.scripts/rmpp/`), and enter (as root or using sudo):
+Start in the folder you want your scripts to live in (mine is `~/.scripts/rmpp/`), and either
+run `sudo ./install.sh` or run (as root or using sudo):
+```
+```
 ```
 # ln -s $(pwd)/rmpp /bin/rmpp
 # ln -s $(pwd)/unrm /bin/unrm
 # ln -s $(pwd)/emptytrash /bin/emptytrash
 # mv rmpp.conf /etc/rmpp.conf
 ```
-Then in your `~/.bashrc` just add `alias rm='rmpp'`.
+Then in your `~/.bashrc` just add `alias rm='rmpp'`, `alias rmdir='rmdirpp'`.
 
 After this, you can specify GNU rm with `/bin/rm`.
 
