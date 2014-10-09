@@ -16,3 +16,4 @@ ln -s $(pwd)/rmpp /bin/rmpp
 ln -s $(pwd)/unrm /bin/unrm
 ln -s $(pwd)/rmdirpp /bin/rmdirpp
 ln -s $(pwd)/emptytrash /bin/emptytrash
+ln -s $(pwd)/rmpp.conf /etc/rmpp.conf

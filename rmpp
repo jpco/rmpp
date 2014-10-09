@@ -11,7 +11,7 @@ if [[ $# -eq 0 ]]; then
 	echo "rmpp: missing operand."
 	echo "Try 'rm --help' for more information."
 	exit 1
-elif [[ $1 = "--help" ]]; then
+elif [[ $1 = "--help" || $1 = "-h" ]]; then
 	echo "Usage: rm [OPTION]... FILE..."
 	echo "Rmpp--Safe rm: Does not unlink the file(s): rather, moves them to the user's"
 	echo "~/.trash/ folder. See unrm and emptytrash for details on what you can"
