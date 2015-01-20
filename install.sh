@@ -8,6 +8,7 @@ if [[ $# -ne 0 ]]; then
 		unlink /bin/unrm
 		unlink /bin/rmdirpp
 		unlink /bin/emptytrash
+		unlink /bin/lstrash
 		exit 0
 	fi
 fi
@@ -16,4 +17,5 @@ ln -s $(pwd)/rmpp /bin/rmpp
 ln -s $(pwd)/unrm /bin/unrm
 ln -s $(pwd)/rmdirpp /bin/rmdirpp
 ln -s $(pwd)/emptytrash /bin/emptytrash
+ln -s $(pwd)/lstrash /bin/lstrash
 ln -s $(pwd)/rmpp.conf /etc/rmpp.conf
