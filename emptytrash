@@ -13,7 +13,7 @@ if [[ $1 = "--help" ]]; then
 elif [[ $1 = "-f" ]]; then
     conf=y
 else
-    echo -n "Do you really want to empty the trash? (y/N) "
+    echo -n "Do you really want to empty the trash? (y/N): "
     read conf
 fi
 

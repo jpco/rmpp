@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [[ -z `cat ~/.trash/trashregister` ]]; then
+    echo "No files in trash."
+    exit 0
+fi
+
 echo "Deleted files currently in trash:"
 while read -r line; do
 	filename="${line%/*}"
