@@ -43,7 +43,7 @@ IFS='
 
 for ftounrm in "$@"; do
 	IFS=$defIFS
-	cd $(dirname "$ftounrm")
+	cd $(dirname -- "$ftounrm")
 	fullpath=$(pwd)
 	justfname="${ftounrm##*/}"
 	if [[ -z $justfname ]]; then

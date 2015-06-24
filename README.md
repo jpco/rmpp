@@ -38,6 +38,7 @@ After this, you can specify GNU rm with `/bin/rm`.
 
 ###BUGS:
  - Currently doesn't behave right with the filename `*`
+ - Nor does it behave right with the filename `->` (oops, lol --jpsh)
 
 ###TO-DO:
  - Add to the blacklist (?)

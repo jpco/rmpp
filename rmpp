@@ -69,6 +69,9 @@ for arg in $@; do
 		if [[ $arg =~ [iI] ]]; then
 			interact=1
 		fi
+        if [[ $arg =~ [-] ]]; then
+            ll='--'
+        fi
 	fi
 done
 
@@ -106,7 +109,7 @@ for ftorm in $@; do
 		fi
 	fi
 
-	cd $(dirname $ftorm)
+	cd $(dirname $ll $ftorm)
 	fullpath=$(pwd)
 	justfname=${ftorm##*/}
 	if [[ $ftorm =~ /$ ]]; then
@@ -144,7 +147,7 @@ for ftorm in $@; do
 	fi
 
 	newfname="~$justfname~$(date +%s)"
-	mv $ftorm ~/.trash/$newfname
+	mv $ll $ftorm ~/.trash/$newfname
 
 	echo -e "$fullpath/$justfname/$newfname" >> ~/.trash/trashregister
 done
