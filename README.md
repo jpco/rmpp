@@ -43,5 +43,6 @@ After this, you can specify GNU rm with `/bin/rm`.
 ###TO-DO:
  - Add to the blacklist (?)
  - Test in a multi-user environment/context
+ - Colored `lstrash` output?
 
 Contact at mail@jpconger.com :)

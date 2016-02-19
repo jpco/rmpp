@@ -13,9 +13,11 @@ if [[ $# -ne 0 ]]; then
 	fi
 fi
 
-ln -s $(pwd)/rmpp /bin/rmpp
-ln -s $(pwd)/unrm /bin/unrm
-ln -s $(pwd)/rmdirpp /bin/rmdirpp
-ln -s $(pwd)/emptytrash /bin/emptytrash
-ln -s $(pwd)/lstrash /bin/lstrash
+PATHDIR=/usr/bin
+
+ln -s $(pwd)/rmpp $PATHDIR/rmpp
+ln -s $(pwd)/unrm $PATHDIR/unrm
+ln -s $(pwd)/rmdirpp $PATHDIR/rmdirpp
+ln -s $(pwd)/emptytrash $PATHDIR/emptytrash
+ln -s $(pwd)/lstrash $PATHDIR/lstrash
 ln -s $(pwd)/rmpp.conf /etc/rmpp.conf
