@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -f
+
 if [[ $# -eq 0 ]]; then
 	echo "rmdir: missing operand."
 	echo "Try 'rmdir --help' for more information."

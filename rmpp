@@ -5,6 +5,8 @@
 # later.
 # Written by Jack Conger, 2014
 
+set -f
+
 # ARGUMENT PARSING
 
 if [[ $# -eq 0 ]]; then

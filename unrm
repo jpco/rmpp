@@ -3,6 +3,8 @@
 # How to save what you just killed? Use unrm! :)
 # Written by Jack Conger, 2014
 
+set -f
+
 # ARGUMENT HANDLING
 
 if [[ $# -eq 0 ]]; then
